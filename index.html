@@ -4,11 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Sayman Accounting v3</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<!-- فونت Vazirmatn - از repo خودمون -->
+<link rel="stylesheet" href="/fonts.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js" defer></script>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#3aaa5e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="سایمان">
 <style>
 /* ===== SAYMAN ACCOUNTING v3 - STYLES ===== */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -37,7 +40,7 @@
 }
 
 body {
-  font-family: 'Vazirmatn', 'Outfit', sans-serif;
+  font-family: 'Vazirmatn', sans-serif;
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
@@ -75,7 +78,7 @@ body::after  { width: 500px; height: 500px; background: radial-gradient(circle, 
 .sb-logo-img { width: 46px; height: 46px; background: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-sm); overflow: hidden; flex-shrink: 0; }
 .sb-logo-img img { width: 42px; height: 42px; object-fit: contain; filter: brightness(0) invert(1) drop-shadow(0 0 0 transparent); }
 .sb-logo-img { background: linear-gradient(135deg,#1a2540,#2d3d6b) !important; }
-.sb-logo-name { font-family: 'Outfit', 'Vazirmatn', sans-serif; font-size: 0.92rem; font-weight: 700; letter-spacing: 0.2px; background: linear-gradient(135deg,#3aaa5e,#4a90d9); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.sb-logo-name { font-family: 'Vazirmatn', sans-serif; font-size: 0.92rem; font-weight: 700; letter-spacing: 0.2px; background: linear-gradient(135deg,#3aaa5e,#4a90d9); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
 .sb-logo-sub  { font-size: 0.66rem; color: var(--text3); }
 .sb-section { padding: 0.9rem 0.7rem 0.2rem; }
 .sb-section-lbl { font-size: 0.64rem; font-weight: 700; color: var(--text3); letter-spacing: 1.2px; padding: 0 0.7rem; margin-bottom: 3px; }
@@ -187,7 +190,7 @@ body::after  { width: 500px; height: 500px; background: radial-gradient(circle, 
 /* ===== FORMS ===== */
 .form-group { display: flex; flex-direction: column; gap: 5px; }
 .form-label { font-size: 0.78rem; font-weight: 600; color: var(--text2); }
-.f { background: rgba(255,255,255,0.85); border: 1.5px solid rgba(0,0,0,0.09); border-radius: var(--r-xs); color: var(--text); font-family: 'Vazirmatn', 'Outfit', sans-serif; font-size: 0.88rem; padding: 9px 13px; outline: none; transition: border-color 0.2s, box-shadow 0.2s; direction: rtl; width: 100%; }
+.f { background: rgba(255,255,255,0.85); border: 1.5px solid rgba(0,0,0,0.09); border-radius: var(--r-xs); color: var(--text); font-family: 'Vazirmatn', sans-serif; font-size: 0.88rem; padding: 9px 13px; outline: none; transition: border-color 0.2s, box-shadow 0.2s; direction: rtl; width: 100%; }
 .f:focus { border-color: var(--green); background: white; box-shadow: 0 0 0 3px rgba(58,170,94,0.11); }
 .f.error { border-color: var(--red) !important; box-shadow: 0 0 0 3px rgba(232,68,90,0.11) !important; }
 .f option { background: white; }
@@ -201,7 +204,7 @@ body::after  { width: 500px; height: 500px; background: radial-gradient(circle, 
 .mi-2 { grid-template-columns: 1fr 36px; }
 
 /* ===== BUTTONS ===== */
-.btn { display: inline-flex; align-items: center; justify-content: center; gap: 5px; padding: 9px 18px; border: none; border-radius: var(--r-xs); font-family: 'Vazirmatn', 'Outfit', sans-serif; font-size: 0.86rem; font-weight: 600; cursor: pointer; transition: var(--t); white-space: nowrap; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 5px; padding: 9px 18px; border: none; border-radius: var(--r-xs); font-family: 'Vazirmatn', sans-serif; font-size: 0.86rem; font-weight: 600; cursor: pointer; transition: var(--t); white-space: nowrap; }
 .btn:active { transform: scale(0.97); }
 .btn-green  { background: linear-gradient(135deg,#3aaa5e,#2d9950); color: white; box-shadow: 0 3px 14px rgba(58,170,94,0.28); }
 .btn-green:hover  { box-shadow: 0 5px 18px rgba(58,170,94,0.38); transform: translateY(-1px); }
@@ -351,7 +354,7 @@ tr.clickable:hover td { background: rgba(58,170,94,0.03); }
 }
 .login-logo { text-align: center; margin-bottom: 1.6rem; }
 .login-logo-badge { width: 58px; height: 58px; background: linear-gradient(135deg,#1a2540,#2d3d6b); border-radius: 16px; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; }
-.login-logo-name { font-family: 'Outfit','Vazirmatn',sans-serif; font-size: 1.1rem; font-weight: 800; background: linear-gradient(135deg,#3aaa5e,#4a90d9); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.login-logo-name { font-family: 'Vazirmatn',sans-serif; font-size: 1.1rem; font-weight: 800; background: linear-gradient(135deg,#3aaa5e,#4a90d9); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
 .login-logo-sub { font-size: 0.72rem; color: var(--text3); margin-top: 2px; }
 .login-err { background: var(--red-l); border: 1px solid rgba(232,68,90,0.25); border-radius: var(--r-xs); padding: 9px 13px; font-size: 0.82rem; color: var(--red); margin-bottom: 12px; display: none; }
 .login-err.show { display: block; }
@@ -1151,6 +1154,27 @@ tr.clickable:hover td { background: rgba(58,170,94,0.03); }
 // SAYMAN ACCOUNTING v3 — JavaScript (کامل)
 // =====================================================
 
+// ---- آدرس API ----
+const API = 'https://sayman-api.mohammad-fathi0483.workers.dev';
+
+// ---- توابع ارتباط با سرور ----
+async function apiGet(path) {
+  try {
+    const r = await fetch(API + path);
+    return await r.json();
+  } catch(e) { return null; }
+}
+async function apiPost(path, data) {
+  try {
+    const r = await fetch(API + path, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    return await r.json();
+  } catch(e) { return null; }
+}
+
 // ---- DB ----
 let DB = {
   customers: [],
@@ -1174,40 +1198,89 @@ let DB = {
   codeSeq: { inv: 1, exp: 1, dep: 1 }
 };
 
-function loadDB() {
-  try { const s = localStorage.getItem('sayman_v3'); if (s) DB = JSON.parse(s); } catch(e){}
-
-  // Migration: اگه داده قدیمی داریم که openingCash/Bank نداره،
-  // موجودی اولیه رو از DB.finance کم txLog محاسبه کن
+function migrateDB() {
   if (DB.finance.openingCash === undefined) {
-    const cashTxTotal = DB.txLog
-      .filter(t => getTxAccount(t) === 'cash')
-      .reduce((s,t) => s + (t.amount||0), 0);
+    const cashTxTotal = DB.txLog.filter(t => getTxAccount(t) === 'cash').reduce((s,t) => s + (t.amount||0), 0);
     DB.finance.openingCash = (DB.finance.cash || 0) - cashTxTotal;
   }
   if (DB.finance.openingBank === undefined) {
-    const bankTxTotal = DB.txLog
-      .filter(t => getTxAccount(t) === 'bank')
-      .reduce((s,t) => s + (t.amount||0), 0);
+    const bankTxTotal = DB.txLog.filter(t => getTxAccount(t) === 'bank').reduce((s,t) => s + (t.amount||0), 0);
     DB.finance.openingBank = (DB.finance.bank || 0) - bankTxTotal;
   }
-  // حساب‌های اختصاصی هم migrate بشن
   (DB.settings?.accounts||[]).forEach(a => {
     if (a.openingBalance === undefined) {
-      const accTxTotal = DB.txLog
-        .filter(t => getTxAccount(t) === 'acc_'+a.id)
-        .reduce((s,t) => s + (t.amount||0), 0);
+      const accTxTotal = DB.txLog.filter(t => getTxAccount(t) === 'acc_'+a.id).reduce((s,t) => s + (t.amount||0), 0);
       a.openingBalance = (a.balance || 0) - accTxTotal;
     }
   });
-
-  // یک بار recalc کامل
   recalcBalancesForAccount('cash');
   recalcBalancesForAccount('bank');
   (DB.settings?.accounts||[]).forEach(a => recalcBalancesForAccount('acc_' + a.id));
 }
-function saveDB() {
-  localStorage.setItem('sayman_v3', JSON.stringify(DB));
+
+// آخرین زمان تغییر که از سرور گرفتیم
+let _lastChange = 0;
+let _syncInterval = null;
+
+async function loadDB() {
+  // نمایش لودینگ
+  showLoadingScreen(true);
+  try {
+    const result = await apiGet('/all');
+    if (result && result['sayman_v3']) {
+      DB = JSON.parse(result['sayman_v3']);
+    }
+    if (result && result['sayman_meta']) {
+      const meta = JSON.parse(result['sayman_meta']);
+      _lastChange = meta.last_change || 0;
+    }
+  } catch(e) {}
+  migrateDB();
+  showLoadingScreen(false);
+}
+
+async function saveDB() {
+  const now = Date.now();
+  _lastChange = now;
+  await apiPost('/batch', {
+    data: {
+      'sayman_v3': JSON.stringify(DB),
+      'sayman_meta': JSON.stringify({ last_change: now })
+    }
+  });
+}
+
+// سینک خودکار — هر ۴ ثانیه چک می‌کنه تغییری هست یا نه
+function startSync() {
+  if (_syncInterval) clearInterval(_syncInterval);
+  _syncInterval = setInterval(async () => {
+    if (!AUTH.user) return;
+    const res = await apiGet('/ping?since=' + _lastChange);
+    if (res && res.changed) {
+      _lastChange = res.last_change;
+      const result = await apiGet('/all');
+      if (result && result['sayman_v3']) {
+        DB = JSON.parse(result['sayman_v3']);
+        migrateDB();
+        // رفرش صفحه فعلی
+        const active = document.querySelector('.nav-item.active');
+        if (active) onSectionLoad(active.dataset.nav);
+        refreshDashboard();
+      }
+    }
+  }, 4000);
+}
+
+function showLoadingScreen(show) {
+  let el = document.getElementById('loading-screen');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'loading-screen';
+    el.style.cssText = 'position:fixed;inset:0;background:white;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;font-family:Vazirmatn,sans-serif';
+    el.innerHTML = '<div style="font-size:2.5rem">⏳</div><div style="font-size:1rem;color:#5a6275;font-weight:600">در حال بارگذاری اطلاعات...</div><div style="width:48px;height:4px;background:#eee;border-radius:4px;overflow:hidden"><div style="width:100%;height:100%;background:linear-gradient(135deg,#3aaa5e,#4a90d9);animation:ldbar 1.2s ease-in-out infinite alternate;border-radius:4px"></div></div><style>@keyframes ldbar{from{transform:translateX(-100%)}to{transform:translateX(100%)}}</style>';
+    document.body.appendChild(el);
+  }
+  el.style.display = show ? 'flex' : 'none';
 }
 
 // ---- Months state ----
@@ -3298,7 +3371,7 @@ function exportExcel() {
   toast('فایل اکسل دانلود شد');
 }
 function clearData() {
-  if (!guardEdit('settings')) return; customConfirm('تمام داده‌ها پاک خواهند شد! برگشت‌پذیر نیست.', () => { localStorage.removeItem('sayman_v3'); location.reload(); }, '⚠️ پاک کردن'); }
+  if (!guardEdit('settings')) return; customConfirm('تمام داده‌ها پاک خواهند شد! برگشت‌پذیر نیست.', async () => { await apiPost('/data', {key:'sayman_v3', value:'{}'}); localStorage.removeItem('sayman_session'); location.reload(); }, '⚠️ پاک کردن'); }
 
 function deleteExpense(id) {
   if (!guardEdit('expenses')) return;
@@ -3471,25 +3544,44 @@ const ALL_PAGES = [
   { id:'settings',     label:'تنظیمات',           icon:'⚙️' },
 ];
 
+// کاربران در حافظه نگه داشته می‌شن و با سرور sync می‌شن
+let _usersCache = null;
+
 function loadUsers() {
-  try {
-    const s = localStorage.getItem('sayman_users');
-    if (s) return JSON.parse(s);
-  } catch(e){}
-  // ادمین پیش‌فرض
+  if (_usersCache) return _usersCache;
+  // ادمین پیش‌فرض تا وقتی از سرور بیاد
   return [{
     id: 1, username: 'admin', password: 'admin123',
     displayName: 'مدیر سیستم', role: 'admin',
     pages: ALL_PAGES.reduce((acc, p) => { acc[p.id] = { view:true, edit:true }; return acc; }, {})
   }];
 }
+
+async function loadUsersFromServer() {
+  const result = await apiGet('/data?key=sayman_users');
+  if (result && result.value) {
+    _usersCache = JSON.parse(result.value);
+  }
+  if (!_usersCache) {
+    _usersCache = [{
+      id: 1, username: 'admin', password: 'admin123',
+      displayName: 'مدیر سیستم', role: 'admin',
+      pages: ALL_PAGES.reduce((acc, p) => { acc[p.id] = { view:true, edit:true }; return acc; }, {})
+    }];
+  }
+  return _usersCache;
+}
+
 function saveUsers(users) {
-  localStorage.setItem('sayman_users', JSON.stringify(users));
+  _usersCache = users;
+  apiPost('/data', { key: 'sayman_users', value: JSON.stringify(users) });
 }
 
 let AUTH = { user: null };
 
-function initAuth() {
+async function initAuth() {
+  // لود کاربران از سرور
+  await loadUsersFromServer();
   // بررسی session
   try {
     const sess = localStorage.getItem('sayman_session');
@@ -3500,6 +3592,7 @@ function initAuth() {
       if (u) {
         AUTH.user = u;
         showApp();
+        startSync();
         return;
       }
     }
@@ -3609,6 +3702,7 @@ function doLogin() {
   AUTH.user = u;
   localStorage.setItem('sayman_session', JSON.stringify({ userId: u.id }));
   showApp();
+  startSync();
   goNav('dashboard');
 }
 
@@ -3815,8 +3909,8 @@ function applyEditLock(pageId, hasEdit) {
   });
 }
 
-(function init() {
-  loadDB();
+(async function init() {
+  await loadDB();
   if (!DB.notes) DB.notes = [];
   document.querySelectorAll('.nav-item[data-nav]').forEach(el => {
     el.addEventListener('click', () => goNav(el.dataset.nav, el));
@@ -3835,5 +3929,12 @@ function applyEditLock(pageId, hasEdit) {
   initAuth();
 })()
 </script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+  });
+}
+</script>
 </body>
-</html>
+</html><!-- این خط اضافه نمیشه چون فایل درست بسته شده -->
