@@ -443,6 +443,61 @@ tr.clickable:hover td { background: rgba(58,170,94,0.03); }
 
   /* splash */
   .splash-title { font-size: 1.2rem; }
+
+  /* ===== INVOICE FORM MOBILE ===== */
+  /* هدر ستون‌ها مخفی */
+  .inv-items-header { display: none !important; }
+
+  /* ردیف قیمت/kg و info-box: stack عمودی */
+  .inv-price-row { grid-template-columns: 1fr !important; }
+  .inv-info-wrap { padding-bottom: 0 !important; }
+  .inv-info-wrap .info-box { font-size: 0.72rem; }
+
+  /* هر ردیف آیتم فاکتور */
+  .inv-item-row {
+    grid-template-columns: 1fr 36px !important;
+    grid-template-rows: auto auto auto !important;
+    row-gap: 10px !important;
+    column-gap: 8px !important;
+  }
+  /* انتخاب سایز - ردیف ۱، ستون ۱ */
+  .inv-item-row > div.form-group:first-child {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  /* دکمه حذف - ردیف ۱، ستون ۲ */
+  .inv-item-row > button.btn-del {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: end;
+    margin-bottom: 2px;
+  }
+  /* تعداد کیسه - ردیف ۲، هر دو ستون */
+  .inv-item-row > div.form-group:nth-child(2) {
+    grid-column: 1 / 3;
+    grid-row: 2;
+  }
+  /* وزن - ردیف ۳، ستون ۱ */
+  .inv-item-row > .inv-calc-cell:first-of-type {
+    grid-column: 1;
+    grid-row: 3;
+    text-align: right !important;
+    padding: 2px 0 !important;
+    font-size: 0.8rem !important;
+  }
+  /* مبلغ - ردیف ۳، ستون ۲ */
+  .inv-item-row > .inv-calc-cell:last-of-type {
+    grid-column: 2;
+    grid-row: 3;
+    text-align: left !important;
+    padding: 2px 0 !important;
+    font-size: 0.82rem !important;
+  }
+
+  /* خلاصه فاکتور: ۲×۲ */
+  .inv-summary-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
 }
 
 /* ===== AUTH / LOGIN ===== */
@@ -735,9 +790,9 @@ tr.clickable:hover td { background: rgba(58,170,94,0.03); }
       <div class="form-group"><label class="form-label">تاریخ فاکتور</label><div class="datepicker-wrap"><input type="text" id="inv-date" class="f datepicker-input" placeholder="انتخاب تاریخ" readonly onclick="openDP('inv-date')"><div class="dp-popup" id="dp-inv-date"></div></div></div>
       <div class="form-group"><label class="form-label">شماره فاکتور</label><input type="text" id="inv-num" class="f" readonly style="background:#f8fafb;color:var(--text3)"></div>
     </div>
-    <div class="row r2">
+    <div class="row r2 inv-price-row">
       <div class="form-group"><label class="form-label">قیمت هر کیلوگرم (ریال)</label><input type="text" id="inv-kgprice" class="f" placeholder="0" inputmode="numeric" oninput="onPriceInput(this);renderInvItems()"></div>
-      <div style="display:flex;align-items:flex-end;padding-bottom:2px"><div class="info-box" style="margin:0">هر کیسه = ۲۵ kg × قیمت/kg — وزن و مبلغ خودکار محاسبه می‌شود</div></div>
+      <div class="inv-info-wrap" style="display:flex;align-items:flex-end;padding-bottom:2px"><div class="info-box" style="margin:0">هر کیسه = ۲۵ kg × قیمت/kg — وزن و مبلغ خودکار محاسبه می‌شود</div></div>
     </div>
   </div>
   <div class="card mb card-pad">
@@ -745,13 +800,13 @@ tr.clickable:hover td { background: rgba(58,170,94,0.03); }
       <h4 style="font-size:0.88rem;font-weight:700">📦 اقلام فاکتور</h4>
       <button class="btn btn-outline btn-sm" onclick="addInvItem()">➕ سایز جدید</button>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 130px 130px 130px 32px;gap:8px;padding:0 4px;margin-bottom:6px">
+    <div class="inv-items-header" style="display:grid;grid-template-columns:1fr 130px 130px 130px 32px;gap:8px;padding:0 4px;margin-bottom:6px">
       <span class="c-muted">سایز محصول</span><span class="c-muted text-center">تعداد کیسه</span><span class="c-muted text-center">وزن (kg)</span><span class="c-muted text-center">مبلغ (ریال)</span><span></span>
     </div>
     <div id="inv-items-container"></div>
   </div>
   <div class="card mb card-pad">
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+    <div class="inv-summary-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
       <div><div class="c-muted mb1">اقلام</div><div class="fw7" id="inv-s-items">۰ قلم</div></div>
       <div><div class="c-muted mb1">کیسه</div><div class="fw7" id="inv-s-bags">۰</div></div>
       <div><div class="c-muted mb1">وزن</div><div class="fw7" id="inv-s-weight">۰ kg</div></div>
@@ -2518,13 +2573,13 @@ function renderInvItems() {
   const kgp = getRawPrice(document.getElementById('inv-kgprice'));
   document.getElementById('inv-items-container').innerHTML = invItems.map(item => {
     const bags = item.qty || 0, kg = bags * 25, sub = kg * kgp;
-    return `<div style="display:grid;grid-template-columns:1fr 130px 130px 130px 32px;gap:8px;align-items:end;background:rgba(248,250,252,0.8);border:1px solid var(--border);border-radius:var(--r-xs);padding:10px 12px;margin-bottom:8px">
+    return `<div class="inv-item-row" style="display:grid;grid-template-columns:1fr 130px 130px 130px 32px;gap:8px;align-items:end;background:rgba(248,250,252,0.8);border:1px solid var(--border);border-radius:var(--r-xs);padding:10px 12px;margin-bottom:8px">
       <div class="form-group"><select class="f" onchange="updInvItem(${item.id},'productId',this.value)">
         <option value="">— انتخاب سایز —</option>${DB.products.map(p=>`<option value="${p.id}" ${p.id==item.productId?'selected':''}>${p.name} (موجودی:${toFa(p.qty)})</option>`).join('')}
       </select></div>
       <div class="form-group"><input type="number" class="f" value="${item.qty||''}" placeholder="تعداد کیسه" min="1" oninput="updInvItem(${item.id},'qty',this.value,this)" style="text-align:center"></div>
-      <div style="padding:9px 0;text-align:center;font-size:0.82rem;color:var(--text3)">${bags>0?toFa(kg)+' kg':'—'}</div>
-      <div style="padding:9px 0;text-align:center;font-size:0.84rem;font-weight:700;color:var(--green)">${bags>0&&kgp>0?fNum(sub)+' ریال':'—'}</div>
+      <div class="inv-calc-cell" style="padding:9px 0;text-align:center;font-size:0.82rem;color:var(--text3)">${bags>0?toFa(kg)+' kg':'—'}</div>
+      <div class="inv-calc-cell" style="padding:9px 0;text-align:center;font-size:0.84rem;font-weight:700;color:var(--green)">${bags>0&&kgp>0?fNum(sub)+' ریال':'—'}</div>
       <button class="btn-del" onclick="removeInvItem(${item.id})" style="margin-top:0">✕</button>
     </div>`;
   }).join('');
