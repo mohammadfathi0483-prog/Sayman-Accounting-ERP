@@ -403,6 +403,7 @@ tr.clickable:hover td { background: rgba(58,170,94,0.03); }
   }
 
   /* stat grids: max 2 columns on mobile */
+  .g5 { grid-template-columns: repeat(2,1fr) !important; }
   .g4 { grid-template-columns: repeat(2,1fr) !important; }
   .g3 { grid-template-columns: repeat(2,1fr) !important; }
   .g2 { grid-template-columns: repeat(2,1fr) !important; }
@@ -449,6 +450,9 @@ tr.clickable:hover td { background: rgba(58,170,94,0.03); }
 
   /* splash */
   .splash-title { font-size: 1.2rem; }
+
+  /* خلاصه پرداخت‌های فاکتور: تک‌ستون در موبایل */
+  .inv-pay-summary { grid-template-columns: 1fr 1fr !important; }
 
   /* ===== INVOICE FORM MOBILE ===== */
   /* هدر ستون‌ها مخفی */
@@ -506,7 +510,8 @@ tr.clickable:hover td { background: rgba(58,170,94,0.03); }
   }
 }
 
-/* ===== AUTH / LOGIN ===== */
+/* Invoice payment summary grid */
+.inv-pay-summary { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
 /* ===== SPLASH SCREEN ===== */
 #splash-screen {
   position: fixed; inset: 0; z-index: 99999;
@@ -3201,7 +3206,7 @@ function openInvModal(id) {
       <button class="btn btn-outline btn-sm" onclick="addPayRow()">➕ پرداخت</button>
       <div id="ms-overpay-warn" style="display:none;background:var(--gold-l);color:#8a6000;padding:8px 12px;border-radius:8px;font-size:0.8rem;margin-top:8px"></div>
       <hr class="divider">
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:6px">
+      <div class="inv-pay-summary" style="margin-top:6px">
         <div style="text-align:center;padding:10px;background:var(--green-l);border-radius:10px"><div class="c-muted" style="font-size:0.72rem;margin-bottom:3px">پرداخت‌شده</div><div class="c-green fw7" id="ms-paid">${fNum(paid)}</div></div>
         <div style="text-align:center;padding:10px;background:var(--red-l);border-radius:10px"><div class="c-muted" style="font-size:0.72rem;margin-bottom:3px">مانده</div><div class="c-red fw7" id="ms-remain">${fNum(inv.total-paid)}</div></div>
         <div style="text-align:center;padding:10px;background:var(--blue-l);border-radius:10px"><div class="c-muted" style="font-size:0.72rem;margin-bottom:3px">وضعیت</div><div id="ms-status">${invStatusBadge(inv)}</div></div>
@@ -4041,10 +4046,12 @@ function renderTxLog() {
           خالص: ${dayNetSign}${fNum(dayNet)}
         </div>
       </div>
+      <div style="overflow-x:auto">
       <table style="margin-bottom:0;border-radius:0;border:none">
         <thead><tr><th>کد</th><th>نوع</th><th>شرح</th><th>مبلغ</th><th>موجودی بعد</th></tr></thead>
         <tbody>${rows}</tbody>
       </table>
+      </div>
     </div>`;
   }).join('');
 }
@@ -4295,10 +4302,10 @@ function renderReports() {
     <!-- فاکتورهای دوره -->
     <div class="card mt2">
       <div class="card-hdr"><h4>🧾 فاکتورهای این دوره (${toFa(monthInvList.length)} فاکتور)</h4></div>
-      ${monthInvList.length ? `<table style="width:100%;border-collapse:collapse">
+      ${monthInvList.length ? `<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse">
         <thead><tr><th style="text-align:right;padding:8px 14px;font-size:0.73rem;color:var(--text3)">شماره</th><th style="text-align:right;padding:8px 14px;font-size:0.73rem;color:var(--text3)">مشتری</th><th style="text-align:right;padding:8px 14px;font-size:0.73rem;color:var(--text3)">تاریخ</th><th style="text-align:right;padding:8px 14px;font-size:0.73rem;color:var(--text3)">مبلغ</th><th style="text-align:right;padding:8px 14px;font-size:0.73rem;color:var(--text3)">وضعیت</th></tr></thead>
         <tbody>${monthInvList.map(i=>`<tr><td style="padding:8px 14px"><span class="badge b-blue">${i.num}</span></td><td style="padding:8px 14px;font-weight:600">${i.customerName}</td><td style="padding:8px 14px;color:var(--text3);font-size:0.8rem">${i.dateShamsi}</td><td style="padding:8px 14px;color:var(--green);font-weight:700">${fNum(i.total)}</td><td style="padding:8px 14px">${invStatusBadge(i)}</td></tr>`).join('')}</tbody>
-      </table>` : '<div class="empty"><p>فاکتوری در این دوره ثبت نشده</p></div>'}
+      </table></div>` : '<div class="empty"><p>فاکتوری در این دوره ثبت نشده</p></div>'}
     </div>
 
     ${invSnap ? `
